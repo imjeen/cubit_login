@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "124740077408",
+    "project_id": "bloc-login-cb6c2",
+    "storage_bucket": "bloc-login-cb6c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124740077408:android:43a7c92811a9e865d34005",
+        "android_client_info": {
+          "package_name": "com.example.cubit_login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124740077408-4tpn279he1ahpuh1vbijm9f7pb3nas92.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy3zllmx3TJHQNcv-fFFIDBEwXDCS0sME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124740077408-4tpn279he1ahpuh1vbijm9f7pb3nas92.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "124740077408-bke1usal5ln8slnq0gs0agofka3i4us8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cubitLogin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
