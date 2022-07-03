@@ -16,20 +16,6 @@ class AuthRepository {
     });
   }
 
-  Future<void> signUp({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (err) {
-      throw err.toString();
-    }
-  }
-
   Future<void> logOut() async {
     try {
       await Future.wait([
@@ -52,6 +38,37 @@ class AuthRepository {
       );
       final user = UserCredential.user!;
       return user.toUser;
+    } on auth.FirebaseAuthException catch (err) {
+      throw Failure(code: err.code, message: err.message ?? '');
+    } on PlatformException catch (err) {
+      throw Failure(code: err.code, message: err.message ?? '');
+    }
+  }
+
+  Future<User> signUpWithEmailAndPassword({
+    required String userName,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // ignore: non_constant_identifier_names
+      final UserCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final fireUser = UserCredential.user!;
+
+      final user = User.empty.copyWith(
+        id: fireUser.uid,
+        name: userName,
+        email: email,
+      );
+      // await _firebaseFirestore
+      //     .collection('users')
+      //     .doc(fireUser.uid)
+      //     .set(user.toDocument());
+
+      return user;
     } on auth.FirebaseAuthException catch (err) {
       throw Failure(code: err.code, message: err.message ?? '');
     } on PlatformException catch (err) {

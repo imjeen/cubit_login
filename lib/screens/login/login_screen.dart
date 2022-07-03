@@ -1,6 +1,7 @@
 import 'package:cubit_login/repositories/auth_repository.dart';
 import 'package:cubit_login/screens/home/home_screen.dart';
 import 'package:cubit_login/screens/login/cubit/login_cubit.dart';
+import 'package:cubit_login/screens/sign_up/sign_up_screen.dart';
 import 'package:cubit_login/widgets/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,6 +95,7 @@ class _LoginForm extends StatelessWidget {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  obscureText: true,
                   decoration: const InputDecoration(hintText: 'Password'),
                   onChanged: (password) =>
                       context.read<LoginCubit>().passwordChanged(password),
@@ -107,6 +109,21 @@ class _LoginForm extends StatelessWidget {
                       {context.read<LoginCubit>().logInWithCredentials()}
                   },
                   child: const Text('Login'),
+                ),
+                const SizedBox(height: 20.0),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    onPrimary: Colors.black,
+                    elevation: 0,
+                    shadowColor: Colors.transparent,
+                    onSurface: Colors.transparent,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(SignUpScreen.routeName);
+                  },
+                  child: const Text('No Account ? Sign Up'),
                 ),
               ],
             ),
