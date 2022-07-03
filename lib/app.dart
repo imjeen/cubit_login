@@ -1,3 +1,4 @@
+import 'package:cubit_login/blocs/auth/auth_bloc.dart';
 import 'package:cubit_login/custom_router.dart';
 import 'package:cubit_login/repositories/auth_repository.dart';
 import 'package:cubit_login/theme.dart';
@@ -14,11 +15,20 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider(create: (_) => AuthRepository()),
       ],
-      child: MaterialApp(
-        theme: theme,
-        home: Container(),
-        onGenerateRoute: CustomRouter.onGenerateRoute,
-        initialRoute: SplashScreen.routeName,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(
+              authRepository: context.read<AuthRepository>(),
+            ),
+          ),
+        ],
+        child: MaterialApp(
+          theme: theme,
+          home: Container(),
+          onGenerateRoute: CustomRouter.onGenerateRoute,
+          initialRoute: SplashScreen.routeName,
+        ),
       ),
     );
   }

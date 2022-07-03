@@ -1,10 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cubit_login/models/failure_model.dart';
+import 'package:cubit_login/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/services.dart';
 
 class AuthRepository {
-  final FirebaseAuth _firebaseAuth;
+  final auth.FirebaseAuth _firebaseAuth;
 
-  AuthRepository({FirebaseAuth? firebaseAuth})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  AuthRepository({auth.FirebaseAuth? firebaseAuth})
+      : _firebaseAuth = firebaseAuth ?? auth.FirebaseAuth.instance;
+
+  Stream<User> get user {
+    return _firebaseAuth.authStateChanges().map((fireUser) {
+      final user = fireUser == null ? User.empty : fireUser.toUser;
+      return user;
+    });
+  }
 
   Future<void> signUp({
     required String email,
@@ -28,5 +38,35 @@ class AuthRepository {
     } catch (err) {
       throw err.toString();
     }
+  }
+
+  Future<User> logInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // ignore: non_constant_identifier_names
+      final UserCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = UserCredential.user!;
+      return user.toUser;
+    } on auth.FirebaseAuthException catch (err) {
+      throw Failure(code: err.code, message: err.message ?? '');
+    } on PlatformException catch (err) {
+      throw Failure(code: err.code, message: err.message ?? '');
+    }
+  }
+}
+
+extension on auth.User {
+  User get toUser {
+    return User(
+      id: uid,
+      name: displayName ?? '',
+      email: email ?? '',
+      photo: photoURL ?? '',
+    );
   }
 }
